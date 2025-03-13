@@ -31,7 +31,7 @@ app.use('/api', postRouter)*/
 const start = async() => {
     try {
         await sequelize.authenticate()
-        //await sequelize.sync()
+        await sequelize.sync()
         app.listen(PORT, '0.0.0.0',() => {
             console.log('Server has been started on port ' + PORT)
         })
