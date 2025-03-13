@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react'
 import {Button, Card, Col, Container, Image, Row} from "react-bootstrap"
-import cartStore from "../store/cartStore"
+import cartStore from "../store/CartStore"
 import {useParams} from 'react-router-dom'
 import {fetchOneDevice} from "../http/deviceAPI"
-import StarRating from "../components/StarRating";
+import StarRating from "../components/StarRating"
 
 const DevicePage: React.FC = () => {
     const [device, setDevice] = useState({info: []})
