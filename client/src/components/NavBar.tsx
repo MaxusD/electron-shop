@@ -23,7 +23,7 @@ const NavBar = observer(() => {
                 <NavLink to={SHOP_ROUTE}><Image src="/logo.webp" alt="Logo" /></NavLink>
                 {user.isAuth ?
                     <div style={{color: '#fff'}}>
-                    <div className="mb-3">Hello, {user.user.firstName} {user.user.lastName}!</div>
+                    {/*<div className="mb-3">Hello, {user.user.firstName} {user.user.lastName}!</div>*/}
                     <Nav className="me-2 ms-2">
                         <Button
                             variant={"outline-light"}
