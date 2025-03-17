@@ -43,7 +43,7 @@ const AdminTypeList = observer(() => {
     const deleteType = async (id) => {
         try {
             setLoading(true)
-            await axios.delete(`/api/type/${id}`)
+            await axios.delete(`/api/type/${id}`, {withCredentials: true})
             device.setTypes(device.types.filter((type) => type.id !== id))
             setShowSuccess(true)
             setError('')

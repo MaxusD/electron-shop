@@ -54,7 +54,7 @@ const AdminBrandList = observer(() => {
     const deleteBrand = async (id) => {
         try {
             setLoading(true)
-            await axios.delete(`/api/brand/${id}`)
+            await axios.delete(`/api/brand/${id}`, {withCredentials: true})
             device.setBrands(device.brands.filter((brand) => brand.id !== id))
             setShowSuccess(true)
             setError('')

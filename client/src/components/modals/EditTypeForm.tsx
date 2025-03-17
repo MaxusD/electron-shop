@@ -20,7 +20,7 @@ const EditTypeForm = ({show, onHide, type, onUpdate}) => {
         try {
             setLoading(true)
 
-            const response = await axios.put(`/api/type/${type.id}`, { name }, { headers: { 'Content-Type': 'application/json' }})
+            const response = await axios.put(`/api/type/${type.id}`, { name, withCredentials: true }, { headers: { 'Content-Type': 'application/json' }})
 
             if (onUpdate) {
                 onUpdate(response.data)
