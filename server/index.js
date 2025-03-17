@@ -7,6 +7,7 @@ const fileUpload = require('express-fileupload')
 const router = require('./routes/index')
 const errorHandler = require('./middleware/ErrorHandlingMiddleware')
 const path = require('path')
+const session = require('express-session')
 
 const userRouter = require('./routes/user.routes')
 const postRouter = require('./routes/post.routes')
@@ -25,6 +26,17 @@ app.use((req, res, next) => {
     console.log(`Incoming request: ${req.method} ${req.url}`)
     next()
 })
+
+app.use(session({
+    secret: 'electron-shop-sigma',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        sameSite: 'None',
+        secure: true
+    }
+}))
+
 
 app.use(express.json())
 app.use(fileUpload({}))
