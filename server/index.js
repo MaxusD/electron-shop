@@ -15,19 +15,19 @@ const postRouter = require('./routes/post.routes')
 const PORT = process.env.PORT || 5000
 const app = express()
 
-app.use(cors({
+app.use(cors(/*{
     origin: "https://electron-shop-sigma.vercel.app",
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization']
-}))
+}*/))
 
 app.use((req, res, next) => {
     console.log(`Incoming request: ${req.method} ${req.url}`)
     next()
 })
 
-app.use(session({
+/*app.use(session({
     secret: 'electron-shop-sigma',
     resave: false,
     saveUninitialized: true,
@@ -35,7 +35,7 @@ app.use(session({
         sameSite: 'None',
         secure: true
     }
-}))
+}))*/
 
 
 app.use(express.json())
