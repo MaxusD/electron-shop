@@ -13,7 +13,8 @@ export default defineConfig(({ mode }) => {
     server: {
       proxy: {
         '/api': {
-          target: 'http://localhost:3001',
+          //target: 'http://localhost:3001',
+          target: 'https://electron-shop-mwdd.onrender.com',
           changeOrigin: true,
         },
       },
