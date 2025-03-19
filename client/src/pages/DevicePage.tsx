@@ -19,7 +19,7 @@ const DevicePage: React.FC = () => {
                     <Image
                         className="img-fluid mx-auto"
                         style={{maxHeight:"300px", objectFit:"contain"}}
-                        src={process.env.REACT_APP_API_URL + device.img}
+                        src={import.meta.env.REACT_APP_API_URL + device.img}
                     />
                 </Col>
                 <Col md={4}>
