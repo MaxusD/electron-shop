@@ -14,6 +14,7 @@ const authInterceptor = config => {
 }
 
 $authHost.interceptors.request.use(authInterceptor)
+console.log("process.env:", process.env);
 
 
 export {
