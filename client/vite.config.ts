@@ -7,15 +7,15 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   return {
     define: {
-      'import.meta.env.REACT_APP_API_URL': JSON.stringify(env.REACT_APP_API_URL)
+      'process.env.REACT_APP_API_URL': JSON.stringify(env.REACT_APP_API_URL)
     },
     plugins: [react()],
     server: {
       proxy: {
         '/api': {
-          target: env.REACT_APP_API_URL || 'http://localhost:3001',
+          target: env.REACT_APP_API_URL,
           changeOrigin: true,
-          secure: false,
+          secure: true,
         },
       },
     }
