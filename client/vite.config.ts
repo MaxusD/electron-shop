@@ -13,8 +13,9 @@ export default defineConfig(({ mode }) => {
     server: {
       proxy: {
         '/api': {
-          target: 'http://localhost:3001',
+          target: env.REACT_APP_API_URL || 'http://localhost:3001',
           changeOrigin: true,
+          secure: false,
         },
       },
     }
