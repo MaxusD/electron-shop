@@ -20,7 +20,7 @@ const EditTypeForm = ({show, onHide, type, onUpdate}) => {
         try {
             setLoading(true)
             console.log('BEFORE UPDATE')
-            const response = await axios.put(`/api/type/${type.id}`, { name }, { headers: { 'Content-Type': 'application/json' }})
+            const response = await axios.put(`/type/${type.id}`, { name }, { headers: { 'Content-Type': 'application/json' }})
             console.log('AFTER UPDATE')
             if (onUpdate) {
                 onUpdate(response.data)
