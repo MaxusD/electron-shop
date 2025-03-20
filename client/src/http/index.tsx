@@ -13,7 +13,6 @@ const authInterceptor = config => {
 }
 
 $authHost.interceptors.request.use(authInterceptor)
-console.log(process.env.REACT_APP_API_URL)
 
 
 export {
