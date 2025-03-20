@@ -15,6 +15,13 @@ const postRouter = require('./routes/post.routes')
 const PORT = process.env.PORT || 5000
 const app = express()
 
+app.put('/api/type/:id', (req, res) => {
+    console.log('PUT request received:', req.params.id)
+    console.log('Body:', req.body)
+    res.send({ message: 'Received' })
+})
+
+
 app.use(cors({
     origin: "https://electron-shop-sigma.vercel.app",
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
