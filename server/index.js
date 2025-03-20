@@ -2,7 +2,6 @@ require('dotenv').config()
 const express = require('express')
 const sequelize = require('./db')
 const models = require('./models/models')
-const cors = require('cors')
 const fileUpload = require('express-fileupload')
 const router = require('./routes/index')
 const errorHandler = require('./middleware/ErrorHandlingMiddleware')
@@ -22,13 +21,6 @@ app.use((req, res, next) => {
     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization")
     next()
 })
-
-/*app.use(cors({
-    origin: "https://electron-shop-sigma.vercel.app",
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true,
-    allowedHeaders: ['Content-Type', 'Authorization']
-}))*/
 
 app.use((req, res, next) => {
     console.log(`Incoming request: ${req.method} ${req.url}`)
