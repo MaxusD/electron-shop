@@ -23,7 +23,7 @@ app.put('/api/type/:id', (req, res) => {
 
 
 app.use(cors({
-    origin: "https://electron-shop-sigma.vercel.app",
+    origin: /*"https://electron-shop-sigma.vercel.app"*/'*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization']
