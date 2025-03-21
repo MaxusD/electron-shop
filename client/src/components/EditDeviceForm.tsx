@@ -57,7 +57,7 @@ const EditDeviceForm = ({show, onHide, device}) => {
             if (image) {
                 formData.append("img", image)
             }
-            await axios.put(`/api/device/${device.id}`, formData, {
+            await axios.put(`${process.env.REACT_APP_API_URL}api/device/${device.id}`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 }
