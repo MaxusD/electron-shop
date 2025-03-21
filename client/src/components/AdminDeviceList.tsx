@@ -24,7 +24,7 @@ const AdminDeviceList = observer(() => {
 
     const deleteDevice = async (id: number) => {
         try {
-            await axios.delete(`/api/device/${id}`)
+            await axios.delete(`${process.env.REACT_APP_API_URL}api/device/${id}`)
             device.removeDevice(id)
         } catch (e) {
             console.error('Failed to delete device: ', e)

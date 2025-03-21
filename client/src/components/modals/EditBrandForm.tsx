@@ -19,7 +19,7 @@ const EditBrandForm = ({show, onHide, onUpdate, brand}) => {
 
         try {
             setLoading(true)
-            const response = await axios.put(`/api/brand/${brand.id}`, { name, withCredentials: true },  { headers: { 'Content-Type': 'application/json' }})
+            const response = await axios.put(`${process.env.REACT_APP_API_URL}api/brand/${brand.id}`, { name, withCredentials: true },  { headers: { 'Content-Type': 'application/json' }})
                 .then(response => console.log("Updated!", response.data))
                 .catch(error => console.error("Update failed", error))
 
