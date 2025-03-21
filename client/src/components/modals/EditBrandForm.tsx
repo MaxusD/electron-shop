@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
-import axios from "axios";
-import {Button, Form, Modal, Spinner} from "react-bootstrap";
-import SuccessAlert from "./SuccessAlert";
+import axios from "axios"
+import {Button, Form, Modal, Spinner} from "react-bootstrap"
+import SuccessAlert from "./SuccessAlert"
 
 const EditBrandForm = ({show, onHide, onUpdate, brand}) => {
     const [name, setName] = useState<string>(brand?.name || '')
@@ -19,11 +19,7 @@ const EditBrandForm = ({show, onHide, onUpdate, brand}) => {
 
         try {
             setLoading(true)
-            const response = await axios.put(`${process.env.REACT_APP_API_URL}api/brand/${brand.id}`, { name, withCredentials: true },  { headers: { 'Content-Type': 'application/json' }})
-                .then(response => console.log("Updated!", response.data))
-                .catch(error => console.error("Update failed", error))
-
-            console.log("Обновленный бренд:", response.data)
+            const response = await axios.put(`${process.env.REACT_APP_API_URL}api/brand/${brand.id}`, { name },  { headers: { 'Content-Type': 'application/json' }})
 
             if (onUpdate) {
                 onUpdate(response.data)
