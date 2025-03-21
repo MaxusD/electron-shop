@@ -16,7 +16,6 @@ const app = express()
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "https://electron-shop-sigma.vercel.app")
-    res.header('Set-Cookie', '__vercel_live_token=electron-shop; SameSite=None; Secure; Path=/');
     //res.header("Access-Control-Allow-Origin", "*")
     res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, HEAD, OPTIONS")
     res.header("Access-Control-Allow-Credentials", "true")
