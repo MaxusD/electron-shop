@@ -1,14 +1,7 @@
 {
   "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "https://electron-shop-mwdd.onrender.com/api/$1"
-    }
-  ],
-  "redirects": [],
-  "routes": [
-    { "src": "^/admin$", "dest": "/index.html" },
-    { "src": "^/admin/(.*)", "dest": "/index.html" },
-    { "src": ".*", "dest": "/index.html" }
+    { "source": "/admin", "destination": "/" },
+    { "source": "/dashboard", "destination": "/" },
+    { "source": "/:path*", "destination": "/index.html" }
   ]
 }
