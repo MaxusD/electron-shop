@@ -4,5 +4,8 @@
       "source": "/api/(.*)",
       "destination": "https://electron-shop-mwdd.onrender.com/api/$1"
     }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
