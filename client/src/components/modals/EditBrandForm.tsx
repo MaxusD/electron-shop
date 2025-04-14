@@ -3,15 +3,27 @@ import axios from "axios"
 import {Button, Form, Modal, Spinner} from "react-bootstrap"
 import SuccessAlert from "./SuccessAlert"
 
-const EditBrandForm = ({show, onHide, onUpdate, brand}) => {
-    const [name, setName] = useState<string>(brand?.name || '')
+interface Brand {
+    id: number,
+    name: string
+}
+
+interface EditBrandFormProps {
+    show: boolean,
+    onHide: any,
+    onUpdate: any,
+    brand: object
+}
+
+const EditBrandForm: React.FC<EditBrandFormProps> = ({show, onHide, onUpdate, brand}) => {
+    const [name, setName] = useState<string>('')
     const [showSuccess, setShowSuccess] = useState(false)
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        if (brand && brand.id) {
-            setName(brand.name || '')
+        if (brand && (brand as Brand).id) {
+            setName((brand as Brand).name || '')
         }
     }, [brand])
 
@@ -19,7 +31,7 @@ const EditBrandForm = ({show, onHide, onUpdate, brand}) => {
 
         try {
             setLoading(true)
-            const response = await axios.put(`${process.env.REACT_APP_API_URL}api/brand/${brand.id}`, { name },  { headers: { 'Content-Type': 'application/json' }})
+            const response = await axios.put(`${process.env.REACT_APP_API_URL}api/brand/${(brand as Brand).id}`, { name },  { headers: { 'Content-Type': 'application/json' }})
 
             if (onUpdate) {
                 onUpdate(response.data)

@@ -1,14 +1,34 @@
-import {makeAutoObservable} from "mobx"
+import {makeAutoObservable, runInAction} from "mobx"
+import {$host} from "../http";
+
+interface IType {
+    id: number
+    name: string
+}
+
+interface IBrand {
+    id: number
+    name: string
+}
+
+interface IDevice {
+    id: number
+    name: string
+    price: number
+    rating: number
+    img: string
+}
 
 export default class DeviceStore {
-    private _types: Array<{id: number, name: string}>
-    private _brands: Array<{id: number, name: string}>
-    private _devices: Array<{id: number, name: string, price: number, rating: number, img: string}>
-    private _selectedType: object
-    private _selectedBrand: object
+    private _types: IType[]
+    private _brands: IBrand[]
+    private _devices: IDevice[]
+    private _selectedType: IType | {}
+    private _selectedBrand: IBrand | {}
     private _page: number
     private _totalCount: number
-    private readonly _limit: number
+    private _limit: number
+    private _pageCount: number
     constructor() {
         this._types = []
         this._brands = []
@@ -17,37 +37,57 @@ export default class DeviceStore {
         this._selectedBrand = {}
         this._page = 1
         this._totalCount = 0
-        this._limit = 5
+        this._limit = 10
+        this._pageCount = 0
         makeAutoObservable(this)
     }
 
-    setTypes(types) {
+    async loadConfig() {
+        try {
+            const {data} = await $host.get('api/device/config')
+            runInAction(() => {
+                this._limit = data.pagination.defaultLimit
+            })
+        } catch (e) {
+            console.error('Failed to load config:', e)
+        }
+    }
+
+    setPageCount(count: number): void {
+        this._pageCount = count
+    }
+
+    get pageCount(): number {
+        return this._pageCount
+    }
+
+    setTypes(types: IType[]): void {
         this._types = types
     }
 
-    setSelectedType(type) {
+    setSelectedType(type: IType | {}):void {
         this.setPage(1)
         this._selectedType = type
     }
 
-    setSelectedBrand(brand) {
+    setSelectedBrand(brand: IBrand | {}):void {
         this.setPage(1)
         this._selectedBrand = brand
     }
 
-    setPage(page) {
+    setPage(page: number): void {
         this._page = page
     }
 
-    setTotalCount(count) {
+    setTotalCount(count: number): void {
         this._totalCount = count
     }
 
-    setBrands(brands) {
+    setBrands(brands: IBrand[]): void {
         this._brands = brands
     }
 
-    setDevices(devices) {
+    setDevices(devices: IDevice[]): void {
         this._devices = devices
     }
 
@@ -86,4 +126,12 @@ export default class DeviceStore {
     get limit() {
         return this._limit
     }
+
+    updateDeviceRating(deviceId: number, newRating: number): void {
+        const device = this.devices.find(d => d.id === deviceId)
+        if (device) {
+            device.rating = newRating
+        }
+    }
+
 }

@@ -1,14 +1,16 @@
-import React, {useContext} from 'react'
+import {useContext} from 'react'
 import {observer} from "mobx-react-lite"
 import {Context} from "../main"
 import {Pagination} from "react-bootstrap"
 
 const Pages = observer(() => {
     const {device} = useContext(Context)
-    const pageCount = Math.ceil(device.totalCount / device.limit)
+    const pageCount = device.pageCount || Math.ceil(device.totalCount / (device.limit || 1))
     const pages =[]
 
-    for (let i = 0; i < pageCount; i++) {
+    const validPageCount = pageCount > 0 ? pageCount : 1
+
+    for (let i = 0; i < validPageCount; i++) {
         pages.push(i + 1)
     }
     return (

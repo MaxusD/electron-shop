@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 import {Button, Form, Modal, Spinner} from "react-bootstrap"
 import axios from "axios"
 import SuccessAlert from "./SuccessAlert"

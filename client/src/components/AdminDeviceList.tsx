@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react'
+import {useContext, useEffect, useState} from 'react'
 import {fetchDevices} from "../http/deviceAPI"
 import {observer} from "mobx-react-lite"
 import axios from "axios"
@@ -8,6 +8,7 @@ import EditDeviceForm from "./EditDeviceForm"
 
 
 const AdminDeviceList = observer(() => {
+    // @ts-ignore
     const {device} = useContext(Context)
 
     const [editModalVisible, setEditModalVisible] = useState(false)
@@ -53,7 +54,7 @@ const AdminDeviceList = observer(() => {
                                     style={{ width: '100%' }}>
                                     <td>{data.id}</td>
                                     <td>{data.name}</td>
-                                    <td><img src={process.env.REACT_APP_API_URL + data.img} width={150} height={150} /></td>
+                                    <td><img alt="image" src={process.env.REACT_APP_API_URL + data.img} width={150} height={150} /></td>
                                     <td>{data.price}</td>
                                     <td><Button
                                         variant="outline-danger"

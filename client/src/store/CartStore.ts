@@ -1,15 +1,21 @@
 import { makeAutoObservable } from 'mobx'
 
-class CartStore {
-    cart = []
+interface CartItem {
+    id: number
+    price: number
+    quantity: number
+}
 
+class CartStore {
+    //cart = []
+    cart: CartItem[] = []
 
     constructor() {
         makeAutoObservable(this)
         this.loadCart()
     }
 
-    addToCart(device) {
+    addToCart(device: any) {
         const existingItem = this.cart.find(item => item.id === device.id)
         if (existingItem) {
             existingItem.quantity += 1
@@ -19,7 +25,7 @@ class CartStore {
         this.saveCart()
     }
 
-    removeFromCart(id) {
+    removeFromCart(id: number) {
         this.cart = this.cart.filter(item => item.id !== id)
         this.saveCart()
     }

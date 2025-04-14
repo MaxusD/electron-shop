@@ -1,7 +1,7 @@
 import {observer} from "mobx-react-lite"
 import {Button, Table} from "react-bootstrap"
 import SuccessAlert from "./modals/SuccessAlert"
-import React, {useContext, useEffect, useState} from "react"
+import {useContext, useEffect, useState} from "react"
 import {Context} from "../main"
 import axios from "axios"
 import EditBrandForm from "./modals/EditBrandForm"
@@ -43,7 +43,7 @@ const AdminBrandList = observer(() => {
         return 0
     })
 
-    const requestSort = (key) => {
+    const requestSort = (key: string) => {
         let direction = "asc"
         if (sortConfig.key === key && sortConfig.direction === "asc") {
             direction = "desc"
@@ -51,11 +51,11 @@ const AdminBrandList = observer(() => {
         setSortConfig({key, direction})
     }
 
-    const deleteBrand = async (id) => {
+    const deleteBrand = async (id: number) => {
         try {
             setLoading(true)
             await axios.delete(`${process.env.REACT_APP_API_URL}api/brand/${id}`, {withCredentials: true})
-            device.setBrands(device.brands.filter((brand) => brand.id !== id))
+            device.setBrands(device.brands.filter((brand: { id: number }) => brand.id !== id))
             setShowSuccess(true)
             setError('')
         } catch (error) {
@@ -65,9 +65,9 @@ const AdminBrandList = observer(() => {
         }
     }
 
-    const handleUpdateBrand = (updatedBrand) => {
+    const handleUpdateBrand = (updatedBrand: { id: number }) => {
         device.setBrands(
-            device.brands.map((brand) => (brand.id === updatedBrand.id ? updatedBrand : brand))
+            device.brands.map((brand: { id: number }) => (brand.id === updatedBrand.id ? updatedBrand : brand))
         )
         setShowSuccess(true)
         setTimeout(() => setShowSuccess(false), 2000)
@@ -116,7 +116,8 @@ const AdminBrandList = observer(() => {
                 brand={selectedBrand}
                 onUpdate={handleUpdateBrand}
             />
-            {showSuccess && <SuccessAlert message="Brand updated successfully!" onClose={() => setShowSuccess(false)} />}
+            {showSuccess && <SuccessAlert message="Brand updated successfully!" onClose={() => setShowSuccess(false)}
+                                          show={false} />}
         </div>
     )
 })

@@ -1,46 +1,34 @@
 import React, { useState } from "react"
-import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa"
+import { FaStar, FaStarHalfAlt } from "react-icons/fa"
 
 interface StarRatingProps {
     rating: number
+    onRatingChange?: (newRating: number) => void
+    disabled?: boolean //voting
 }
 
-const StarRating: React.FC<StarRatingProps> = ({ rating }) => {
-    /*const [rating, setRating] = useState(0)
-    const [hover, setHover] = useState(0)*/
-    const stars = []
+const StarRating: React.FC<StarRatingProps> = ({ rating, onRatingChange, disabled = false }) => {
 
-    /*const handleClick = (value: number) => {
-        setRating(value)
-        if (onRatingChange) {
-            onRatingChange(value)
-        }
-    }*/
-
-    for (let i = 1; i <= 5; i++) {
-        if (i <= Math.floor(rating)) {
-            stars.push(<FaStar key={i} color="#ffc107" />)
-        } else if (i - 0.5 === rating) {
-            stars.push(<FaStarHalfAlt key={i} color="#ffc107" />)
-        } else {
-            stars.push(<FaRegStar key={i} color="#ffc107" />)
-        }
-    }
+    const [hover, setHover] = useState<number | null>(null)
+    //const stars = []
 
     return (
-        <div style={{gap: "2px"}}>
-            {/*{[1, 2, 3, 4, 5].map((star) => (*/}
-            {/*    <FaStar*/}
-            {/*        key={star}*/}
-            {/*        size={30}*/}
-            {/*        className="cursor-pointer"*/}
-            {/*        color={(hover || rating) >= star ? "#ffc107" : "#e4e5e9"}*/}
-            {/*        onMouseEnter={() => setHover(star)}*/}
-            {/*        onMouseLeave={() => setHover(0)}*/}
-            {/*        onClick={() => handleClick(star)}*/}
-            {/*    />*/}
-            {/*))}*/}
-            {stars}
+        <div style={{ display: "flex", gap: "4px" }}>
+            {[1, 2, 3, 4, 5].map((star) => {
+                const full = (hover ?? rating) >= star
+                const half = !full && (hover ?? rating) + 0.5 >= star
+
+                return (
+                    <span key={star} style={{ cursor: disabled ? "default" : "pointer" }}
+                          onMouseEnter={() => !disabled && setHover(star)}
+                          onMouseLeave={() => setHover(null)}
+                          onClick={() => !disabled && onRatingChange?.(star)}>
+                        {full ? <FaStar size={20} color="#ffc107" />
+                            : half ? <FaStarHalfAlt size={20} color="#ffc107" />
+                                : <FaStar size={20} color="#e4e5e9" />}
+                    </span>
+                )
+            })}
         </div>
     )
 }
