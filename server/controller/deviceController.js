@@ -1,6 +1,6 @@
 const uuid = require('uuid')
 const path = require('path')
-const {Device, DeviceInfo} = require('../models/models')
+const {Device, Rating, DeviceInfo} = require('../models/models')
 const ApiError = require('../error/ApiError')
 const fs = require("fs")
 
@@ -115,9 +115,7 @@ async getAll(req, res) {
     let {brandId, typeId, limit, page} = req.query
     page = page || 1
     limit = limit || 20
-    let offset = page * limit - limit
-
-    console.log('Parameters:', {brandId, typeId, limit, page})
+    let offset = (page - 1) * limit
 
     let devices
 
@@ -156,7 +154,18 @@ async getAll(req, res) {
                 offset
             })
     }
-    return res.json(devices)
+
+    const pageCount = Math.ceil(devices.count / limit)
+
+    return res.json({
+        rows: devices.rows,
+        count: devices.count,
+        pagination: {
+            currentPage: page,
+            pageCount: pageCount,
+            limit: limit
+        }
+    })
 }
 
 async getOne(req, res) {
@@ -174,6 +183,35 @@ async getOne(req, res) {
         return res.status(500).json({message: "Error retrieving device"})
     }
 }
+
+    async rateDevice(req, res) {
+        console.log("Получен запрос на рейтинг", req.body)
+        try {
+            const { deviceId, rating } = req.body
+            const userId = req.body.userId
+
+            const existingRating = await Rating.findOne({
+                where: { userId, deviceId }
+            })
+
+            if (existingRating) {
+                return res.status(400).json({ message: "Вы уже оценили этот товар" })
+            }
+
+            await Rating.create({ userId, deviceId, name: rating })
+
+            const ratings = await Rating.findAll({ where: { deviceId } })
+            const avgRating = ratings.reduce((sum, r) => sum + r.name, 0) / ratings.length
+
+            await Device.update({ rating: avgRating }, { where: { id: deviceId } })
+
+            return res.json({ message: "Оценка добавлена", avgRating })
+        } catch (error) {
+            console.error(error)
+            return res.status(500).json({ message: "Ошибка на сервере" })
+        }
+    }
+
 
 }
 

@@ -8,5 +8,6 @@ router.get('/', deviceController.getAll)
 router.get('/:id', deviceController.getOne)
 router.delete('/:id', deviceController.delete)
 router.put('/:id', deviceController.update)
+router.post('/rate', deviceController.rateDevice)
 
 module.exports = router
