@@ -6,6 +6,7 @@ const fileUpload = require('express-fileupload')
 const router = require('./routes/index')
 const errorHandler = require('./middleware/ErrorHandlingMiddleware')
 const path = require('path')
+const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const cors = require('cors')
 
@@ -22,7 +23,6 @@ app.use((req, res, next) => {
     next()
 })
 
-
 app.use((req, res, next) => {
     console.log(`Incoming request: ${req.method} ${req.url}`)
     next()
@@ -32,14 +32,13 @@ app.use(express.json())
 app.use(fileUpload({}))
 app.use(express.static(path.resolve(__dirname, 'static')))
 app.use('/api', router)
+app.use(cookieParser())
 
 app.use(errorHandler)
 
 app.get('/', (req, res) => {
     res.status(200).json('WORKING!!!')
 })
-/*app.use('/api', userRouter)
-app.use('/api', postRouter)*/
 
 const start = async() => {
     try {
