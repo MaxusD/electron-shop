@@ -3,31 +3,48 @@ import { BrowserRouter} from 'react-router-dom'
 import AppRouter from "./components/AppRouter"
 import NavBar from "./components/NavBar"
 import {observer} from "mobx-react-lite"
-import {useContext, useEffect, useState} from "react"
+import {useContext, useEffect} from "react"
 import {Context} from "./main"
-import {check} from "./http/userAPI"
 import {Spinner} from "react-bootstrap"
 import CartWidget from "./components/modals/CartWidget"
+import axios from "axios"
 
 const App = observer(() => {
-    const {user} = useContext(Context)
-    const [loading, setLoading] = useState(true)
+    const context = useContext(Context)
+    if (!context) {
+        throw new Error('Context must be used within ContextProvider');
+    }
+    const { user } = context
+
+    axios.defaults.withCredentials = true
+
+    axios.interceptors.response.use(
+        res => res,
+        async err => {
+            const originalRequest = err.config
+
+            if (err.response?.status === 401 && !originalRequest._retry) {
+                originalRequest._retry = true
+                try {
+                    const { data } = await axios.post('/api/user/refresh', {}, { withCredentials: true })
+                    localStorage.setItem('token', data.token)
+                    originalRequest.headers['Authorization'] = `Bearer ${data.token}`
+                    return axios(originalRequest)
+                } catch (refreshError) {
+                    localStorage.removeItem('token')
+                }
+            }
+
+            return Promise.reject(err)
+        }
+    )
 
     useEffect(() => {
-
-            setTimeout(() => {
-                check().then(data => {
-                    user.setUser(data)
-                    user.setIsAuth(true)
-                }).catch(() => {
-                    user.setUser({})
-                    user.setIsAuth(false)
-                }).finally(() => setLoading(false))
-            }, 500)
-
+        user.checkAuth()
     }, [])
 
-    if (loading) {
+
+    if (user.isLoading) {
         return <Spinner animation={"grow"} />
     }
 

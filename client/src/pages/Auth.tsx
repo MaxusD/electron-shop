@@ -1,10 +1,11 @@
-import React, {useContext, useState} from 'react'
+import {useContext, useState} from 'react'
 import {Button, Card, Container, Form} from "react-bootstrap"
 import {LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE} from "../utils/consts"
 import {NavLink, useLocation, useNavigate} from "react-router-dom"
 import {login, registration} from "../http/userAPI"
-import {observer} from "mobx-react-lite";
-import {Context} from "../main";
+import {observer} from "mobx-react-lite"
+import {Context} from "../main"
+import cartStore from "../store/CartStore"
 
 
 const Auth = observer(() => {
@@ -24,9 +25,9 @@ const Auth = observer(() => {
                 data = await registration(email, password)
             }
             user.setUser(user)
-
             user.setIsAuth(true)
             navigate(SHOP_ROUTE)
+            await cartStore.loadUserCart()
         } catch (e) {
             alert(e.response.data.message)
         }

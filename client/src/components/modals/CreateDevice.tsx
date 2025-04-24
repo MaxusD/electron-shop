@@ -1,10 +1,10 @@
-import React, {useContext, useEffect, useState} from 'react'
+import {useContext, useEffect, useState} from 'react'
 import {Button, Dropdown, DropdownMenu, DropdownToggle, Form, Modal} from "react-bootstrap"
 import {Context} from "../../main"
 import {createDevice, fetchBrands, fetchTypes} from "../../http/deviceAPI"
 import {observer} from "mobx-react-lite"
 import DeviceInfoForm from "./DeviceInfoForm"
-import SuccessAlert from "./SuccessAlert";
+import SuccessAlert from "./SuccessAlert"
 
 const CreateDevice = observer(({show, onHide}) => {
     const {device} = useContext(Context)

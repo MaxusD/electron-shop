@@ -1,21 +1,27 @@
-import React, {useContext} from 'react'
+import {useContext} from 'react'
 import {Context} from "../main"
 import {Button, Container, Nav, Navbar, Image} from "react-bootstrap"
 import {NavLink} from "react-router-dom"
 import {ADMIN_ROUTE, LOGIN_ROUTE, SHOP_ROUTE} from "../utils/consts"
 import {observer} from "mobx-react-lite"
 import {useNavigate} from "react-router-dom"
+import cartStore from "../store/CartStore"
 
 const NavBar = observer(() => {
-    const {user} = useContext(Context)
+    const context = useContext(Context)
+    if (!context) {
+        throw new Error('Context must be used within ContextProvider');
+    }
+    const { user } = context
     const navigate = useNavigate()
 
     const logOut = () => {
-        console.log('Logging out...')
         localStorage.removeItem('token')
-        user.setUser({})
-        user.setIsAuth(false)
+        user.logout()
+        cartStore.cart = []
+        navigate(LOGIN_ROUTE)
     }
+
 
     return (
         <Navbar>

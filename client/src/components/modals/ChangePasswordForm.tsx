@@ -5,7 +5,12 @@ import {Alert, Button, Form} from "react-bootstrap"
 import {changePassword} from "../../http/userAPI";
 
 const ChangePasswordForm = observer(() => {
-    const {user} = useContext(Context)
+    const context = useContext(Context)
+    if (!context) {
+        throw new Error('Context must be used within ContextProvider');
+    }
+    const { user } = context
+    //const {user} = useContext(Context)
     const [currentPassword, setCurrentPassword] = useState('')
     const [newPassword, setNewPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')

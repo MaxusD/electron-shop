@@ -1,29 +1,51 @@
-import React from "react"
 import { v4 as uuidv4 } from 'uuid'
 import { Row, Col, Form, Button } from "react-bootstrap"
+import React from "react"
 
-const DeviceInfoForm = ({ info, setInfo }) => {
+interface InfoItem {
+    number: string
+    title: string
+    description: string
+}
+
+interface DeviceInfoFormProps {
+    info: InfoItem[]
+    setInfo: React.Dispatch<React.SetStateAction<InfoItem[]>>
+}
+
+const DeviceInfoForm = ({ info, setInfo }: DeviceInfoFormProps) => {
     const addInfo = () => {
         setInfo(prevInfo => [
             ...prevInfo,
             { number: uuidv4(), title: '', description: '' }
         ])
     }
-    const removeInfo = (number) => {
+    const removeInfo = (number: string) => {
         setInfo(prevInfo => {
             const updatedInfo = prevInfo.filter(item => item.number !== number)
             return updatedInfo
         })
     }
 
-    const changeInfo = (key, value, number) => {
-        setInfo(prevInfo => {
-            const updatedInfo = prevInfo.map(item =>
+    // const changeInfo = (key, value, number) => {
+    //     setInfo(prevInfo => {
+    //         const updatedInfo = prevInfo.map(item =>
+    //             item.number === number ? { ...item, [key]: value } : item
+    //         )
+    //         return updatedInfo
+    //     })
+    // }
+    const changeInfo = (
+        key: keyof InfoItem,  // Only allows "number" | "title" | "description"
+        value: string,        // Since all fields in InfoItem are strings
+        number: string        // Because item.number is a string (UUID)
+    ) => {
+        setInfo(prevInfo =>
+            prevInfo.map(item =>
                 item.number === number ? { ...item, [key]: value } : item
             )
-            return updatedInfo
-        })
-    }
+        );
+    };
     return (
         <>
             <Button className="mt-3" variant="outline-dark" onClick={addInfo}>

@@ -6,7 +6,24 @@ import StarRating from "./StarRating"
 import axios from "axios"
 import {jwtDecode} from "jwt-decode"
 
-const DeviceItem = ({device, deviceStore/*, userId*/}) => {
+interface Device {
+    id: string
+    name: string
+    price: number
+    rating: number
+    img: string
+}
+
+interface DeviceStore {
+    updateDeviceRating: (deviceId: string, newRating: number) => void
+}
+
+interface DeviceItemProps {
+    device: Device
+    deviceStore: DeviceStore
+}
+
+const DeviceItem = ({device, deviceStore}: DeviceItemProps) => {
     const navigate = useNavigate()
     const [userRating, setUserRating] = useState(device.rating)
     const [rated, setRated] = useState(false)
