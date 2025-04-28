@@ -3,6 +3,7 @@ import UserStore from './store/UserStore'
 import {createRoot} from "react-dom/client"
 import App from "./App"
 import DeviceStore from "./store/DeviceStore"
+import axios from "axios"
 
 interface ContextType {
     user: UserStore
@@ -10,7 +11,9 @@ interface ContextType {
 }
 
 export const Context = createContext<ContextType | null>(null)
-console.log(process.env.REACT_APP_API_URL)
+
+axios.defaults.baseURL = 'https://electron-shop-mwdd.onrender.com'
+axios.defaults.withCredentials = true
 
 createRoot(document.getElementById('root')!).render(
   <Context.Provider value={{
