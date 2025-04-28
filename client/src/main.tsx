@@ -12,7 +12,7 @@ interface ContextType {
 
 export const Context = createContext<ContextType | null>(null)
 
-axios.defaults.baseURL = import.meta.env.REACT_APP_API_URL
+axios.defaults.baseURL = process.env.REACT_APP_API_URL
 axios.defaults.withCredentials = true
 
 createRoot(document.getElementById('root')!).render(
