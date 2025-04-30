@@ -56,13 +56,13 @@ class UserController {
             firstName: user.firstName,
             lastName: user.lastName
         }
-        //const token = generateJwt(user.id, user.email, user.role, user.firstName, user.lastName)
+
         const { accessToken, refreshToken } = generateTokens(payload)
-        //return res.json({token})
+
         res
             .cookie('refreshToken', refreshToken, {
                 httpOnly: true,
-                secure: false, // true, если https
+                secure: true, // true, if https
                 sameSite: 'strict',
                 maxAge: 30 * 24 * 60 * 60 * 1000
             })
@@ -78,16 +78,18 @@ class UserController {
             lastName: req.user.lastName
         }
         const token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: '15m' })
-        //const token = generateJwt(req.user.id, req.user.email, req.user.role, req.user.firstName, req.user.lastName)
+
         return res.json({token})
     }
 
     async refresh(req, res, next) {
-        const refreshToken = req.cookies.refreshToken
-        if (!refreshToken) return res.status(401).json({ message: 'Not authorized' })
+        const refreshToken = req.cookies?.refreshToken
+        if (!refreshToken) {
+            return res.status(401).json({message: 'No refresh token in cookies'})
+        }
 
         try {
-            const userData = jwt.verify(refreshToken, process.env.REFRESH_SECRET_KEY)
+            const userData = jwt.verify(refreshToken, process.env.REFRESH_SECRET)
             const payload = {
                 id: userData.id,
                 email: userData.email,
@@ -100,12 +102,12 @@ class UserController {
 
             res.cookie('refreshToken', newRefreshToken, {
                 httpOnly: true,
-                secure: true,
+                secure: false,
                 sameSite: 'strict',
                 maxAge: 30 * 24 * 60 * 60 * 1000
             })
 
-            res.json({ token: accessToken })
+            return res.json({ token: accessToken })
         } catch (error) {
             return res.status(403).json({ message: 'Refresh token expired or invalid' })
         }
