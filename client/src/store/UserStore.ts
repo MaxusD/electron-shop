@@ -36,23 +36,6 @@ export default class UserStore {
 
     /*checkAuth() {
         const token = localStorage.getItem('token')
-        if (token) {
-            this.setIsAuth(true)
-            try {
-                const userData = JSON.parse(atob(token.split('.')[1]))
-                this.setUser(userData)
-            } catch (e) {
-                this.setIsAuth(false)
-                this.setUser({})
-            }
-        } else {
-            this.setIsAuth(false)
-            this.setUser({})
-        }
-        this.isLoading = false
-    }*/
-    checkAuth() {
-        const token = localStorage.getItem('token')
         if (!token) {
             this.setIsAuth(false)
             this.setUser({})
@@ -63,7 +46,7 @@ export default class UserStore {
         try {
             const decoded: any = jwtDecode(token)
             if (decoded.exp * 1000 < Date.now()) {
-                // токен истёк, пробуем обновить
+
                 axios.post('/api/user/refresh', {}, { withCredentials: true })
                     .then(res => {
                         localStorage.setItem('token', res.data.token)
@@ -87,6 +70,30 @@ export default class UserStore {
             this.setUser({})
             this.setIsAuth(false)
             localStorage.removeItem('token')
+            this.isLoading = false
+        }
+    }*/
+
+    async checkAuth() {
+        try {
+            const res = await axios.post('/api/user/refresh', {}, { withCredentials: true })
+
+            const token = res.data.token
+            if (!token) {
+                throw new Error('No token received');
+            }
+
+            localStorage.setItem('token', token)
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+
+            const decoded = jwtDecode(token)
+            this.setUser(decoded)
+            this.setIsAuth(true)
+        } catch (e) {
+            localStorage.removeItem('token')
+            this.setUser({})
+            this.setIsAuth(false)
+        } finally {
             this.isLoading = false
         }
     }
