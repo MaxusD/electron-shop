@@ -23,10 +23,11 @@ app.use((req, res, next) => {
     next()
 })
 
-/*app.use((req, res, next) => {
+app.use((req, res, next) => {
     console.log(`Incoming request: ${req.method} ${req.url}`)
+    console.log('🔍 refreshToken cookie =', req.cookies?.refreshToken)
     next()
-})*/
+})
 
 app.use(cookieParser())
 app.use(express.json())
