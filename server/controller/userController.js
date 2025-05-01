@@ -102,7 +102,7 @@ class UserController {
 
             res.cookie('refreshToken', newRefreshToken, {
                 httpOnly: true,
-                secure: false,
+                secure: true,
                 sameSite: 'none', //'strict' for localhost
                 maxAge: 30 * 24 * 60 * 60 * 1000
             })
