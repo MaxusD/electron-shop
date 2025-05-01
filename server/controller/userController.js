@@ -62,7 +62,7 @@ class UserController {
         res
             .cookie('refreshToken', refreshToken, {
                 httpOnly: true,
-                secure: true, // true, if https
+                secure: false, // true, if https
                 sameSite: 'strict',
                 maxAge: 30 * 24 * 60 * 60 * 1000
             })
