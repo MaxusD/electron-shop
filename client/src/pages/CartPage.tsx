@@ -3,11 +3,15 @@ import {observer} from "mobx-react-lite"
 import {Button, Card, Container, ListGroup, Modal, Form} from "react-bootstrap"
 import cartStore from "../store/CartStore"
 import axios from "axios"
+import styles from '../scss/CartItem.module.scss'
+import SuccessAlert from "../components/modals/SuccessAlert.tsx"
 
 
-const CartPage: React.FC = observer(() => {
+const CartPage = observer(({}) => {
     const [showModal, setShowModal] = useState(false)
     const [email, setEmail] = useState('')
+    const [showSuccess, setShowSuccess] = useState(false)
+    const [error, setError] = useState('')
 
 
     const handleSendEmail = async () => {
@@ -23,8 +27,11 @@ const CartPage: React.FC = observer(() => {
                 email,
                 order: orderDetails
             })
+
             setShowModal(false)
-            alert("Order email sent!")
+            // alert("Order email sent!")
+            setShowSuccess(true)
+            setError('')
         } catch (error) {
             console.error("Failed to send email:", error)
             alert("Error sending email")
@@ -41,32 +48,37 @@ const CartPage: React.FC = observer(() => {
                 <>
                     <ListGroup>
                         {cartStore.cart.map((item: any) => (
-                            <ListGroup.Item key={item.id} className="d-flex justify-content-between align-items-center">
-                                <div style={{width:400}}>
-                                    <img src={process.env.REACT_APP_API_URL + item.img} height={200}/>
-                                </div>
+                            <ListGroup.Item key={item.id} className={styles.item}>
                                 <div>
-                                    <div><strong>{item.name}</strong> - {item.price} UAH</div>
+                                    <img src={process.env.REACT_APP_API_URL + item.img} className={styles.item__image}/>
                                 </div>
-                                <div className="d-flex align-items-center">
-                                    <span className="me-2">Quantity:</span>
-                                    <Button
-                                        variant="outline-secondary"
-                                        size="sm"
-                                        onClick={() => cartStore.decreaseQuantity(item.id)}
-                                        disabled={item.quantity <= 1}
-                                    >−</Button>
-                                    <span className="mx-2">{item.quantity}</span>
-                                    <Button
-                                        variant="outline-secondary"
-                                        size="sm"
-                                        onClick={() => cartStore.increaseQuantity(item.id)}
-                                    >+</Button>
+                                <div className={styles.item__info}>
+                                    <div className={styles['item__info-name']}><strong>{item.name}</strong></div>
                                 </div>
+                                <div className={styles['item__info-price']}>
+                                    {item.price} UAH
+                                </div>
+                                <div className={styles.item__controls}>
+                                    <div className={styles['item__controls-row']}>
+                                        <span className={styles['item__controls-label']}>Quantity:</span>
+                                        <Button
+                                            variant="outline-secondary"
+                                            size="sm"
+                                            onClick={() => cartStore.decreaseQuantity(item.id)}
+                                            disabled={item.quantity <= 1}
+                                        >−</Button>
+                                        <span className="mx-2">{item.quantity}</span>
+                                        <Button
+                                            variant="outline-secondary"
+                                            size="sm"
+                                            onClick={() => cartStore.increaseQuantity(item.id)}
+                                        >+</Button>
+                                    </div>
 
-                                <Button variant="danger" onClick={() => cartStore.removeFromCart(item.id)}>
-                                    Remove
-                                </Button>
+                                    <Button variant="danger" onClick={() => cartStore.removeFromCart(item.id)}>
+                                        Remove
+                                    </Button>
+                                </div>
                             </ListGroup.Item>
                         ))}
                     </ListGroup>
@@ -105,6 +117,8 @@ const CartPage: React.FC = observer(() => {
                             </Button>
                         </Modal.Footer>
                     </Modal>
+                    <SuccessAlert message="Order email successfully sent!" show={showSuccess}
+                                  onClose={() => setShowSuccess(false)}/>
                 </>
             )}
         </Container>

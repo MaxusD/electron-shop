@@ -1,0 +1,52 @@
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 16px;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  background-color: #f8f9fa;
+
+  &__image {
+    width: 150px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 5px;
+    flex-shrink: 0;
+  }
+
+  &__info {
+    flex: 1;
+
+    &-name {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #343a40;
+    }
+
+    &-price {
+      font-size: 0.95rem;
+      color: #6c757d;
+    }
+  }
+
+  &__controls {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    flex-shrink: 0;
+
+    &-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    &-label {
+      font-size: 0.9rem;
+      margin-right: 0.5rem;
+    }
+  }
+}
